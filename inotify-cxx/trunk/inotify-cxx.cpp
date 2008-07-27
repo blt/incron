@@ -5,7 +5,7 @@
  * 
  * inotify C++ interface
  * 
- * Copyright (C) 2006 Lukas Jelinek <lukas@aiken.cz>
+ * Copyright (C) 2006, 2007 Lukas Jelinek <lukas@aiken.cz>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of one of the following licenses:
@@ -145,6 +145,14 @@ void InotifyEvent::DumpTypes(uint32_t uValue, std::string& rStr)
       DUMP_SEP;
       rStr.append("IN_CLOSE");
     }
+
+#ifdef IN_MOVE_SELF
+    if (IsType(uValue, IN_MOVE_SELF)) {
+      DUMP_SEP;
+      rStr.append("IN_MOVE_SELF");    
+    }
+#endif // IN_MOVE_SELF
+    
     else {
       if (IsType(uValue, IN_CLOSE_WRITE)) {
         DUMP_SEP;
@@ -204,13 +212,6 @@ void InotifyEvent::DumpTypes(uint32_t uValue, std::string& rStr)
     rStr.append("IN_ONLYDIR");
   }
 #endif // IN_ONLYDIR
-
-#ifdef IN_MOVE_SELF
-  if (IsType(uValue, IN_MOVE_SELF)) {
-    DUMP_SEP;
-    rStr.append("IN_MOVE_SELF");    
-  }
-#endif // IN_MOVE_SELF
 }
 
 void InotifyEvent::DumpTypes(std::string& rStr) const
