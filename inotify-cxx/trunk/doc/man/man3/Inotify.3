@@ -1,0 +1,302 @@
+.TH "Inotify" 3 "4 Sep 2006" "Version 0.1.0" "inotify-cxx" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+Inotify \- inotify class  
+
+.PP
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <inotify-cxx.h>\fP
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBInotify\fP ()"
+.br
+.RI "\fIConstructor. \fP"
+.ti -1c
+.RI "\fB~Inotify\fP ()"
+.br
+.RI "\fIDestructor. \fP"
+.ti -1c
+.RI "void \fBClose\fP ()"
+.br
+.RI "\fIRemoves all watches and closes the inotify device. \fP"
+.ti -1c
+.RI "bool \fBIsReady\fP () const "
+.br
+.RI "\fIChecks whether the inotify is ready. \fP"
+.ti -1c
+.RI "bool \fBAdd\fP (\fBInotifyWatch\fP *pWatch)"
+.br
+.RI "\fIAdds a new watch. \fP"
+.ti -1c
+.RI "bool \fBAdd\fP (\fBInotifyWatch\fP &rWatch)"
+.br
+.RI "\fIAdds a new watch. \fP"
+.ti -1c
+.RI "void \fBRemove\fP (\fBInotifyWatch\fP *pWatch)"
+.br
+.RI "\fIRemoves a watch. \fP"
+.ti -1c
+.RI "void \fBRemove\fP (\fBInotifyWatch\fP &rWatch)"
+.br
+.RI "\fIRemoves a watch. \fP"
+.ti -1c
+.RI "void \fBRemoveAll\fP ()"
+.br
+.RI "\fIRemoves all watches. \fP"
+.ti -1c
+.RI "size_t \fBGetWatchCount\fP () const "
+.br
+.RI "\fIReturns the count of watches. \fP"
+.ti -1c
+.RI "bool \fBWaitForEvents\fP (bool fNoIntr=false)"
+.br
+.RI "\fIWaits for inotify events. \fP"
+.ti -1c
+.RI "int \fBGetEventCount\fP ()"
+.br
+.RI "\fIReturns the count of received and queued events. \fP"
+.ti -1c
+.RI "bool \fBGetEvent\fP (\fBInotifyEvent\fP *pEvt)"
+.br
+.RI "\fIExtracts a queued inotify event. \fP"
+.ti -1c
+.RI "bool \fBGetEvent\fP (\fBInotifyEvent\fP &rEvt)"
+.br
+.RI "\fIExtracts a queued inotify event. \fP"
+.ti -1c
+.RI "bool \fBPeekEvent\fP (\fBInotifyEvent\fP *pEvt)"
+.br
+.RI "\fIExtracts a queued inotify event (without removing). \fP"
+.ti -1c
+.RI "bool \fBPeekEvent\fP (\fBInotifyEvent\fP &rEvt)"
+.br
+.RI "\fIExtracts a queued inotify event (without removing). \fP"
+.ti -1c
+.RI "\fBInotifyWatch\fP * \fBFindWatch\fP (int iDescriptor)"
+.br
+.RI "\fISearches for a watch. \fP"
+.in -1c
+.SH "Detailed Description"
+.PP 
+inotify class 
+.PP
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "Inotify::Inotify ()"
+.PP
+Constructor. 
+.PP
+Creates and initializes an instance of inotify communication object (opens the inotify device).
+.SS "Inotify::~Inotify ()"
+.PP
+Destructor. 
+.PP
+Calls \fBClose()\fP due for clean-up.
+.SH "Member Function Documentation"
+.PP 
+.SS "bool Inotify::Add (\fBInotifyWatch\fP & rWatch)\fC [inline]\fP"
+.PP
+Adds a new watch. 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIrWatch\fP inotify watch 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+true = success, false = failure
+.RE
+.PP
+
+.SS "bool Inotify::Add (\fBInotifyWatch\fP * pWatch)"
+.PP
+Adds a new watch. 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIpWatch\fP inotify watch 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+true = success, false = failure
+.RE
+.PP
+
+.SS "void Inotify::Close ()"
+.PP
+Removes all watches and closes the inotify device. 
+.PP
+.SS "\fBInotifyWatch\fP * Inotify::FindWatch (int iDescriptor)"
+.PP
+Searches for a watch. 
+.PP
+It tries to find a watch by the given descriptor.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIiDescriptor\fP watch descriptor 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+found descriptor; NULL if no such watch exists
+.RE
+.PP
+
+.SS "bool Inotify::GetEvent (\fBInotifyEvent\fP & rEvt)\fC [inline]\fP"
+.PP
+Extracts a queued inotify event. 
+.PP
+The extracted event is removed from the queue.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIrEvt\fP event object 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+true = success, false = failure
+.RE
+.PP
+
+.SS "bool Inotify::GetEvent (\fBInotifyEvent\fP * pEvt)"
+.PP
+Extracts a queued inotify event. 
+.PP
+The extracted event is removed from the queue. If the pointer is NULL it does nothing.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIpEvt\fP event object 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+true = success, false = failure
+.RE
+.PP
+
+.SS "int Inotify::GetEventCount ()"
+.PP
+Returns the count of received and queued events. 
+.PP
+This number is related to the events in the queue inside this object, not to the events pending in the kernel.
+.PP
+\fBReturns:\fP
+.RS 4
+count of events
+.RE
+.PP
+
+.SS "size_t Inotify::GetWatchCount () const\fC [inline]\fP"
+.PP
+Returns the count of watches. 
+.PP
+\fBReturns:\fP
+.RS 4
+count of watches
+.RE
+.PP
+
+.SS "bool Inotify::IsReady () const\fC [inline]\fP"
+.PP
+Checks whether the inotify is ready. 
+.PP
+\fBReturns:\fP
+.RS 4
+true = initialized properly, false = something failed
+.RE
+.PP
+
+.SS "bool Inotify::PeekEvent (\fBInotifyEvent\fP & rEvt)\fC [inline]\fP"
+.PP
+Extracts a queued inotify event (without removing). 
+.PP
+The extracted event stays in the queue.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIrEvt\fP event object 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+true = success, false = failure
+.RE
+.PP
+
+.SS "bool Inotify::PeekEvent (\fBInotifyEvent\fP * pEvt)"
+.PP
+Extracts a queued inotify event (without removing). 
+.PP
+The extracted event stays in the queue. If the pointer is NULL it does nothing.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIpEvt\fP event object 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+true = success, false = failure
+.RE
+.PP
+
+.SS "void Inotify::Remove (\fBInotifyWatch\fP & rWatch)\fC [inline]\fP"
+.PP
+Removes a watch. 
+.PP
+If the given watch is not present it does nothing.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIrWatch\fP inotify watch
+.RE
+.PP
+
+.SS "void Inotify::Remove (\fBInotifyWatch\fP * pWatch)"
+.PP
+Removes a watch. 
+.PP
+If the given watch is not present it does nothing.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIpWatch\fP inotify watch
+.RE
+.PP
+
+.SS "void Inotify::RemoveAll ()"
+.PP
+Removes all watches. 
+.PP
+.SS "bool Inotify::WaitForEvents (bool fNoIntr = \fCfalse\fP)"
+.PP
+Waits for inotify events. 
+.PP
+It waits until one or more events occur.
+.PP
+\fBParameters:\fP
+.RS 4
+\fIfNoIntr\fP if true it re-calls the system call after a handled signal 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+true = event(s) occurred, false = failure
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for inotify-cxx from the source code.

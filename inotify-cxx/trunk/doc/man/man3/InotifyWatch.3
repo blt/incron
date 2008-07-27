@@ -1,0 +1,108 @@
+.TH "InotifyWatch" 3 "4 Sep 2006" "Version 0.1.0" "inotify-cxx" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+InotifyWatch \- inotify watch class  
+
+.PP
+.SH SYNOPSIS
+.br
+.PP
+\fC#include <inotify-cxx.h>\fP
+.PP
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBInotifyWatch\fP (const std::string &rPath, int32_t uMask)"
+.br
+.RI "\fIConstructor. \fP"
+.ti -1c
+.RI "\fB~InotifyWatch\fP ()"
+.br
+.RI "\fIDestructor. \fP"
+.ti -1c
+.RI "int32_t \fBGetDescriptor\fP () const "
+.br
+.RI "\fIReturns the watch descriptor. \fP"
+.ti -1c
+.RI "const std::string & \fBGetPath\fP () const "
+.br
+.RI "\fIReturns the watched file path. \fP"
+.ti -1c
+.RI "uint32_t \fBGetMask\fP () const "
+.br
+.RI "\fIReturns the watch event mask. \fP"
+.in -1c
+.SS "Friends"
+
+.in +1c
+.ti -1c
+.RI "class \fBInotify\fP"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+inotify watch class 
+.PP
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "InotifyWatch::InotifyWatch (const std::string & rPath, int32_t uMask)\fC [inline]\fP"
+.PP
+Constructor. 
+.PP
+Creates an inotify watch. Because this watch is inactive it has an invalid descriptor (-1).
+.PP
+\fBParameters:\fP
+.RS 4
+\fIrPath\fP watched file path 
+.br
+\fIuMask\fP mask for events
+.RE
+.PP
+
+.SS "InotifyWatch::~InotifyWatch ()\fC [inline]\fP"
+.PP
+Destructor. 
+.PP
+.SH "Member Function Documentation"
+.PP 
+.SS "int32_t InotifyWatch::GetDescriptor () const\fC [inline]\fP"
+.PP
+Returns the watch descriptor. 
+.PP
+\fBReturns:\fP
+.RS 4
+watch descriptor; -1 for inactive watch
+.RE
+.PP
+
+.SS "uint32_t InotifyWatch::GetMask () const\fC [inline]\fP"
+.PP
+Returns the watch event mask. 
+.PP
+\fBReturns:\fP
+.RS 4
+event mask
+.RE
+.PP
+
+.SS "const std::string& InotifyWatch::GetPath () const\fC [inline]\fP"
+.PP
+Returns the watched file path. 
+.PP
+\fBReturns:\fP
+.RS 4
+file path
+.RE
+.PP
+
+.SH "Friends And Related Function Documentation"
+.PP 
+.SS "friend class \fBInotify\fP\fC [friend]\fP"
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for inotify-cxx from the source code.
