@@ -40,6 +40,10 @@ If you have installed it into your system-wide include dir (e.g.
 /usr/include), use #include <inotify-cxx.h> or similar.
 Otherwise use #include "inotify-cxx.h".
 
+For thread-safe behavior, define the INOTIFY_THREAD_SAFE symbol
+(eg. -DINOTIFY_THREAD_SAFE on gcc's command line). See documentation
+for details about thread safety.
+
 
 4. Bugs, suggestions
 THIS PROGRAM IS AN ALPHA VERSION. IT PROBABLY CONTAINS BUGS AND
