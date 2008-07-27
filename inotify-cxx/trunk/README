@@ -23,8 +23,11 @@ use a few simple C++ classes.
 
 2. Requirements
 * Linux kernel 2.6.13 or later (with inotify compiled in)
-* inotify headers (inotify.h, inotify-syscalls.h) installed in
-  <INCLUDE_DIR>/sys. The most common place is /usr/include/sys.
+* inotify header(s) installed in <INCLUDE_DIR>/sys. The most common
+  place is /usr/include/sys. Some Linux distributions contain only
+  inotify.h which defines everything needed. But sometimes must
+  be used inotify.h and inotify-syscalls.h as available e.g. at
+  the inotify-cxx homepage.
 * GCC 4.x compiler (probably works also with GCC 3.4, possibly with
   older versions too)
 

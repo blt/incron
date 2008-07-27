@@ -1,3 +1,17 @@
+0.4.0    2006-10-13
+ * two additional flags (IN_ONLYDIR and IN_DONT_FOLLOW) may be used
+   if available (#0000086)
+ * "errorneous" multiple watches on the same path are no longer
+   possible (#0000087)
+ * tarball structure has been fixed (#0000088)
+ * inotify-syscalls.h is included only if inotify.h doesn't contain
+   syscall definitions (#0000090)
+ * enabling/disabling is now done through watch presence in the kernel
+   instead of dropping events (#0000091)
+ * InotifyWatch::SetMask() method has been added to allow later mask
+   modification
+
+
 0.3.1    2006-10-03
  * fixed: wrong behavior for EWOULDBLOCK (Inotify::WaitForEvents())
 
