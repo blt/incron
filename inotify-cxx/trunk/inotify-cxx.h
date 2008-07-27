@@ -453,11 +453,14 @@ public:
   
   /// Returns the count of watches.
   /**
+   * This is the total count of all watches (regardless whether
+   * enabled or not).
+   * 
    * \return count of watches
    */
   inline size_t GetWatchCount() const
   {
-    return (size_t) m_watches.size();
+    return (size_t) m_paths.size();
   }
   
   /// Waits for inotify events.

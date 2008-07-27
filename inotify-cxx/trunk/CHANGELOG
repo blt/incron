@@ -1,3 +1,8 @@
+0.4.1    2006-10-14
+ * wrong value returned by Inotify::GetWatchCount() has been fixed
+   (#0000092)
+   
+
 0.4.0    2006-10-13
  * two additional flags (IN_ONLYDIR and IN_DONT_FOLLOW) may be used
    if available (#0000086)
