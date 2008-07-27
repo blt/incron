@@ -28,86 +28,142 @@
 #define DUMP_SEP \
   ({ \
     if (!rStr.empty()) { \
-      rStr.append(" "); \
+      rStr.append(","); \
     } \
   })
 
+uint32_t InotifyEvent::GetMaskByName(const std::string& rName)
+{
+  if (rName == "IN_ACCESS")
+    return IN_ACCESS;
+  else if (rName == "IN_MODIFY")
+    return IN_MODIFY;
+  else if (rName == "IN_ATTRIB")
+    return IN_ATTRIB;
+  else if (rName == "IN_CLOSE_WRITE")
+    return IN_CLOSE_WRITE;
+  else if (rName == "IN_CLOSE_NOWRITE")
+    return IN_CLOSE_NOWRITE;
+  else if (rName == "IN_MOVED_FROM")
+    return IN_MOVED_FROM;
+  else if (rName == "IN_MOVED_TO")
+    return IN_MOVED_TO;
+  else if (rName == "IN_CREATE")
+    return IN_CREATE;
+  else if (rName == "IN_DELETE")
+    return IN_DELETE;
+  else if (rName == "IN_DELETE_SELF")
+    return IN_DELETE_SELF;
+  else if (rName == "IN_UNMOUNT")
+    return IN_UNMOUNT;
+  else if (rName == "IN_Q_OVERFLOW")
+    return IN_Q_OVERFLOW;
+  else if (rName == "IN_IGNORED")
+    return IN_IGNORED;
+  else if (rName == "IN_CLOSE")
+    return IN_CLOSE;
+  else if (rName == "IN_MOVE")
+    return IN_MOVE;
+  else if (rName == "IN_ISDIR")
+    return IN_ISDIR;
+  else if (rName == "IN_ONESHOT")
+    return IN_ONESHOT;
+  else if (rName == "IN_ALL_EVENTS")
+    return IN_ALL_EVENTS;
+    
+  return (uint32_t) 0;
+}
 
-void InotifyEvent::DumpTypes(std::string& rStr) const
+void InotifyEvent::DumpTypes(uint32_t uValue, std::string& rStr)
 {
   rStr = "";
   
-  if (IsType(IN_ACCESS)) {
-    rStr.append("IN_ACCESS");
+  if (IsType(uValue, IN_ALL_EVENTS)) {
+    rStr.append("IN_ALL_EVENTS");
   }
-  if (IsType(IN_MODIFY)) {
-    DUMP_SEP;
-    rStr.append("IN_MODIFY");
+  else {
+    if (IsType(uValue, IN_ACCESS)) {
+      DUMP_SEP;
+      rStr.append("IN_ACCESS");    
+    }
+    if (IsType(uValue, IN_MODIFY)) {
+      DUMP_SEP;
+      rStr.append("IN_MODIFY");
+    }
+    if (IsType(uValue, IN_ATTRIB)) {
+      DUMP_SEP;
+      rStr.append("IN_ATTRIB");
+    }
+    if (IsType(uValue, IN_CREATE)) {
+      DUMP_SEP;
+      rStr.append("IN_CREATE");
+    }
+    if (IsType(uValue, IN_DELETE)) {
+      DUMP_SEP;
+      rStr.append("IN_DELETE");
+    }
+    if (IsType(uValue, IN_DELETE_SELF)) {
+      DUMP_SEP;
+      rStr.append("IN_DELETE_SELF");
+    }
+    if (IsType(uValue, IN_OPEN)) {
+      DUMP_SEP;
+      rStr.append("IN_OPEN");
+    }
+    if (IsType(uValue, IN_CLOSE)) {
+      DUMP_SEP;
+      rStr.append("IN_CLOSE");
+    }
+    else {
+      if (IsType(uValue, IN_CLOSE_WRITE)) {
+        DUMP_SEP;
+        rStr.append("IN_CLOSE_WRITE");
+      }
+      if (IsType(uValue, IN_CLOSE_NOWRITE)) {
+        DUMP_SEP;
+        rStr.append("IN_CLOSE_NOWRITE");
+      }
+    }
+    if (IsType(uValue, IN_MOVE)) {
+      DUMP_SEP;
+      rStr.append("IN_MOVE");
+    }
+    else {
+      if (IsType(uValue, IN_MOVED_FROM)) {
+        DUMP_SEP;
+        rStr.append("IN_MOVED_FROM");
+      }
+      if (IsType(uValue, IN_MOVED_TO)) {
+        DUMP_SEP;
+        rStr.append("IN_MOVED_TO");
+      }
+    }
   }
-  if (IsType(IN_ATTRIB)) {
-    DUMP_SEP;
-    rStr.append("IN_ATTRIB");
-  }
-  if (IsType(IN_CLOSE_WRITE)) {
-    DUMP_SEP;
-    rStr.append("IN_CLOSE_WRITE");
-  }
-  if (IsType(IN_CLOSE_NOWRITE)) {
-    DUMP_SEP;
-    rStr.append("IN_CLOSE_NOWRITE");
-  }
-  if (IsType(IN_OPEN)) {
-    DUMP_SEP;
-    rStr.append("IN_OPEN");
-  }
-  if (IsType(IN_MOVED_FROM)) {
-    DUMP_SEP;
-    rStr.append("IN_MOVED_FROM");
-  }
-  if (IsType(IN_MOVED_TO)) {
-    DUMP_SEP;
-    rStr.append("IN_MOVED_TO");
-  }
-  if (IsType(IN_CREATE)) {
-    DUMP_SEP;
-    rStr.append("IN_CREATE");
-  }
-  if (IsType(IN_DELETE)) {
-    DUMP_SEP;
-    rStr.append("IN_DELETE");
-  }
-  if (IsType(IN_DELETE_SELF)) {
-    DUMP_SEP;
-    rStr.append("IN_DELETE_SELF");
-  }
-  if (IsType(IN_UNMOUNT)) {
+  if (IsType(uValue, IN_UNMOUNT)) {
     DUMP_SEP;
     rStr.append("IN_UNMOUNT");
   }
-  if (IsType(IN_Q_OVERFLOW)) {
+  if (IsType(uValue, IN_Q_OVERFLOW)) {
     DUMP_SEP;
     rStr.append("IN_Q_OVERFLOW");
   }
-  if (IsType(IN_IGNORED)) {
+  if (IsType(uValue, IN_IGNORED)) {
     DUMP_SEP;
     rStr.append("IN_IGNORED");
   }
-  if (IsType(IN_CLOSE)) {
-    DUMP_SEP;
-    rStr.append("IN_CLOSE");
-  }
-  if (IsType(IN_MOVE)) {
-    DUMP_SEP;
-    rStr.append("IN_MOVE");
-  }
-  if (IsType(IN_ISDIR)) {
+  if (IsType(uValue, IN_ISDIR)) {
     DUMP_SEP;
     rStr.append("IN_ISDIR");
   }
-  if (IsType(IN_ONESHOT)) {
+  if (IsType(uValue, IN_ONESHOT)) {
     DUMP_SEP;
     rStr.append("IN_ONESHOT");
   }
+}
+
+void InotifyEvent::DumpTypes(std::string& rStr) const
+{
+  DumpTypes((uint32_t) m_evt.mask, rStr);
 }
 
 
@@ -138,6 +194,7 @@ bool Inotify::Add(InotifyWatch* pWatch)
   pWatch->m_wd = inotify_add_watch(m_fd, pWatch->GetPath().c_str(), pWatch->GetMask());
   if (pWatch->m_wd != -1) {
     m_watches.insert(IN_WATCH_MAP::value_type(pWatch->m_wd, pWatch));
+    pWatch->m_pInotify = this;
     return true;
   }
   
@@ -152,6 +209,7 @@ void Inotify::Remove(InotifyWatch* pWatch)
   if (inotify_rm_watch(m_fd, pWatch->GetMask()) != -1) {
     m_watches.erase(pWatch->m_wd);
     pWatch->m_wd = -1;
+    pWatch->m_pInotify = NULL;
   }
 }
 
@@ -159,7 +217,10 @@ void Inotify::RemoveAll()
 {
   IN_WATCH_MAP::iterator it = m_watches.begin();
   while (it != m_watches.end()) {
-    inotify_rm_watch(m_fd, (*it).second->GetMask());
+    InotifyWatch* pW = (*it).second;
+    inotify_rm_watch(m_fd, pW->GetMask());
+    pW->m_wd = -1;
+    pW->m_pInotify = NULL;
     it++;
   }
   
@@ -180,7 +241,8 @@ bool Inotify::WaitForEvents(bool fNoIntr)
   
   ssize_t i = 0;
   while (i < len) {
-    InotifyEvent evt((struct inotify_event *) &m_buf[i]);
+    InotifyWatch* pW = FindWatch(((struct inotify_event *) &m_buf[i])->wd);
+    InotifyEvent evt((struct inotify_event *) &m_buf[i], pW);
     m_events.push_back(evt);
     i += INOTIFY_EVENT_SIZE + (int) evt.GetLength();
   }

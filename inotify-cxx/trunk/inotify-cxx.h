@@ -40,6 +40,12 @@
 /// Event buffer length
 #define INOTIFY_BUFLEN (1024 * (INOTIFY_EVENT_SIZE + 16))
 
+
+// forward declaration
+class InotifyWatch;
+class Inotify;
+
+
 /// inotify event class
 /**
  * It holds all information about inotify event and provides
@@ -56,25 +62,29 @@ public:
   {
     memset(&m_evt, 0, sizeof(m_evt));
     m_evt.wd = (int32_t) -1;
+    m_pWatch = NULL;
   }
   
   /// Constructor.
   /**
    * Creates an event based on inotify event data.
-   * For NULL pointer it works the same way as InotifyEvent().
+   * For NULL pointers it works the same way as InotifyEvent().
    * 
    * \param[in] pEvt event data
+   * \param[in] pWatch inotify watch
    */
-  InotifyEvent(const struct inotify_event* pEvt)
+  InotifyEvent(const struct inotify_event* pEvt, InotifyWatch* pWatch)
   {
     if (pEvt != NULL) {
       memcpy(&m_evt, pEvt, sizeof(m_evt));
       if (pEvt->name != NULL)
         m_name = pEvt->name;
+      m_pWatch = pWatch;
     }
     else {
       memset(&m_evt, 0, sizeof(m_evt));
       m_evt.wd = (int32_t) -1;
+      m_pWatch = NULL;
     }
   }
   
@@ -103,6 +113,17 @@ public:
     return (uint32_t) m_evt.mask;
   }
   
+  /// Checks a value for the event type.
+  /**
+   * \param[in] uValue checked value
+   * \param[in] uType type which is checked for
+   * \return true = the value contains the given type, false = otherwise
+   */
+  inline static bool IsType(uint32_t uValue, uint32_t uType)
+  {
+    return ((uValue & uType) != 0) && ((~uValue & uType) == 0);
+  }
+  
   /// Checks for the event type.
   /**
    * \param[in] uType type which is checked for
@@ -110,7 +131,7 @@ public:
    */
   inline bool IsType(uint32_t uType) const
   {
-    return (((uint32_t) m_evt.mask) & uType) != 0;
+    return IsType((uint32_t) m_evt.mask, uType);
   }
   
   /// Returns the event cookie.
@@ -149,6 +170,15 @@ public:
     rName = GetName();
   }
   
+  /// Returns the source watch.
+  /**
+   * \return source watch
+   */
+  inline InotifyWatch* GetWatch()
+  {
+    return m_pWatch;
+  }
+  
   /// Returns the event raw data.
   /**
    * For NULL pointer it does nothing.
@@ -170,6 +200,20 @@ public:
     memcpy(&rEvt, &m_evt, sizeof(m_evt));
   }
   
+  /// Finds the appropriate mask for a name.
+  /**
+   * \param[in] rName mask name
+   * \return mask for name; 0 on failure
+   */
+  static uint32_t GetMaskByName(const std::string& rName);
+  
+  /// Fills the string with all types contained in an event mask value.
+  /**
+   * \param[in] uValue event mask value
+   * \param[out] rStr dumped event types
+   */
+  static void DumpTypes(uint32_t uValue, std::string& rStr);
+  
   /// Fills the string with all types contained in the event mask.
   /**
    * \param[out] rStr dumped event types
@@ -179,10 +223,9 @@ public:
 private:
   struct inotify_event m_evt; ///< event structure
   std::string m_name;         ///< event name
+  InotifyWatch* m_pWatch;     ///< source watch
 };
 
-
-class Inotify;  // forward declaration
 
 
 /// inotify watch class
@@ -234,12 +277,22 @@ public:
     return (uint32_t) m_uMask;
   }
   
+  /// Returns the appropriate inotify class instance.
+  /**
+   * \return inotify instance
+   */
+  inline Inotify* GetInotify()
+  {
+    return m_pInotify;
+  }
+  
 private:
   friend class Inotify;
 
   std::string m_path;   ///< watched file path
   uint32_t m_uMask;     ///< event mask
   int32_t m_wd;         ///< watch descriptor
+  Inotify* m_pInotify;  ///< inotify object
 };
 
 
