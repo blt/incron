@@ -35,6 +35,7 @@
   })
 
 
+
 int32_t InotifyEvent::GetDescriptor() const
 {
   return  m_pWatch != NULL            // if watch exists

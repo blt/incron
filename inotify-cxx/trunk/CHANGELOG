@@ -1,3 +1,6 @@
+0.5.1    2006-11-10
+ * problems with includes have been fixed (#0000099)
+
 0.5.0    2006-10-29
  * partial thread safety has been implemented (using rwlocks)
  * Inotify::GetEnabledCount() method has been added
