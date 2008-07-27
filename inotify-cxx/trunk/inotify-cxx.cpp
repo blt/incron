@@ -26,6 +26,9 @@
 
 #include "inotify-cxx.h"
 
+/// procfs inotify base path
+#define PROCFS_INOTIFY_BASE "/proc/sys/fs/inotify/"
+
 /// dump separator (between particular entries)
 #define DUMP_SEP \
   ({ \
@@ -93,6 +96,11 @@ uint32_t InotifyEvent::GetMaskByName(const std::string& rName)
   else if (rName == "IN_ONLYDIR")
     return IN_ONLYDIR;
 #endif // IN_ONLYDIR
+
+#ifdef IN_MOVE_SELF
+  else if (rName == "IN_MOVE_SELF")
+    return IN_MOVE_SELF;
+#endif // IN_MOVE_SELF
     
   return (uint32_t) 0;
 }
@@ -196,6 +204,13 @@ void InotifyEvent::DumpTypes(uint32_t uValue, std::string& rStr)
     rStr.append("IN_ONLYDIR");
   }
 #endif // IN_ONLYDIR
+
+#ifdef IN_MOVE_SELF
+  if (IsType(uValue, IN_MOVE_SELF)) {
+    DUMP_SEP;
+    rStr.append("IN_MOVE_SELF");    
+  }
+#endif // IN_MOVE_SELF
 }
 
 void InotifyEvent::DumpTypes(std::string& rStr) const
@@ -506,5 +521,57 @@ void Inotify::SetNonBlock(bool fNonBlock) throw (InotifyException)
   }
     
   IN_WRITE_END
-}  
+}
+
+uint32_t Inotify::GetCapability(InotifyCapability_t cap) throw (InotifyException)
+{
+  FILE* f = fopen(GetCapabilityPath(cap).c_str(), "r");
+  if (f == NULL)
+    throw InotifyException(IN_EXC_MSG("cannot get capability"), errno, NULL);
+    
+  unsigned int val = 0;
+  if (fscanf(f, "%u", &val) != 1) {
+    fclose(f);
+    throw InotifyException(IN_EXC_MSG("cannot get capability"), EIO, NULL);
+  }
+  
+  fclose(f);
+  
+  return (uint32_t) val;
+}
+
+void Inotify::SetCapability(InotifyCapability_t cap, uint32_t val) throw (InotifyException)
+{
+  FILE* f = fopen(GetCapabilityPath(cap).c_str(), "w");
+  if (f == NULL)
+    throw InotifyException(IN_EXC_MSG("cannot set capability"), errno, NULL);
+    
+  if (fprintf(f, "%u", (unsigned int) val) <= 0) {
+    fclose(f);
+    throw InotifyException(IN_EXC_MSG("cannot set capability"), EIO, NULL);
+  }
+  
+  fclose(f);
+}
+
+std::string Inotify::GetCapabilityPath(InotifyCapability_t cap) throw (InotifyException)
+{
+  std::string path(PROCFS_INOTIFY_BASE);
+  
+  switch (cap) {
+    case IN_MAX_EVENTS:
+      path.append("max_queued_events");
+      break;
+    case IN_MAX_INSTANCES:
+      path.append("max_user_instances");
+      break;
+    case IN_MAX_WATCHES:
+      path.append("max_user_watches");
+      break;
+    default:
+      throw InotifyException(IN_EXC_MSG("unknown capability type"), EINVAL, NULL);
+  }
+  
+  return path;
+}
 

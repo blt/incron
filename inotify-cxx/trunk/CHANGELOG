@@ -1,3 +1,9 @@
+0.6.0    2006-12-28
+ * added methods for getting/setting inotify capabilities and limits
+ * added IN_SELF_MOVED flag (if defined)
+ * added Inotify::IsRecursive() for identifying recursive watches
+   (will be implemented in future versions)
+
 0.5.3    2006-12-06
  * fixed incorrect error handling in WaitForEvents()
 
