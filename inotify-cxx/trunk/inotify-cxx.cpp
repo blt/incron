@@ -269,6 +269,25 @@ void InotifyWatch::SetEnabled(bool fEnabled) throw (InotifyException)
   IN_WRITE_END
 }
 
+void InotifyWatch::OnOneshotEvent()
+{
+  IN_WRITE_BEGIN
+  
+  if (!m_fEnabled) {
+    IN_WRITE_END_NOTHROW
+    throw InotifyException(IN_EXC_MSG("event cannot occur on disabled watch"), EINVAL, this);
+  }
+  
+  if (m_pInotify != NULL) {
+    m_pInotify->m_watches.erase(m_wd);
+    m_wd = -1;
+  }
+  
+  m_fEnabled = false;
+  
+  IN_WRITE_END
+}
+
 
 Inotify::Inotify() throw (InotifyException)
 {
@@ -426,6 +445,8 @@ void Inotify::WaitForEvents(bool fNoIntr) throw (InotifyException)
     InotifyWatch* pW = FindWatch(pEvt->wd);
     if (pW != NULL) {
       InotifyEvent evt(pEvt, pW);
+      if (InotifyEvent::IsType(pW->GetMask(), IN_ONESHOT))
+        pW->OnOneshotEvent();
       m_events.push_back(evt);
     }
     i += INOTIFY_EVENT_SIZE + (ssize_t) pEvt->len;

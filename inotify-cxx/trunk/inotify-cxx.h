@@ -502,6 +502,14 @@ private:
   bool m_fEnabled;      ///< events enabled yes/no
   
   IN_LOCK_DECL
+  
+  /// Disables the watch (if it has the one-shot flag).
+  /**
+   * This method must be called after receiving an event.
+   * It ensures the watch object is consistent with the kernel
+   * data. 
+   */
+  void OnOneshotEvent();
 };
 
 
