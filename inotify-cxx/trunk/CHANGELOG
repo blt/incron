@@ -1,3 +1,6 @@
+0.7.1    2007-01-20
+ * incorrect event name handling fixed (#0000135)
+
 0.7.0    2007-01-13
  * added Inotify::SetCloseOnExec() for simple setting this feature
 
