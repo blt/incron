@@ -267,8 +267,11 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
         tasks.clear();
         
         File file = getPath();
-        if (!file.exists())
+        if (!file.exists()) {
+            Properties props = new Properties();
+            taskFrame.setStartSettings(props);
             return;
+        }
         
         try {
             FileInputStream is = new FileInputStream(file);
