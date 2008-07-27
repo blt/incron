@@ -1,3 +1,7 @@
+0.3.1    2006-10-03
+ * fixed: wrong behavior for EWOULDBLOCK (Inotify::WaitForEvents())
+
+
 0.3.0    2006-10-03
  * all errors now handled using exceptions (InotifyException)
  * InotifyEvent no longer use struct inotity_event as its
@@ -6,7 +10,9 @@
  * removed Inotify::IsReady() - no longer necessary
  * added Inotify::GetDescriptor() - returns inotify file descriptor
  * added Inotify::SetNonBlock() - switches nonblocking mode on/off
+ * added possibility to enable/disable watches
  * some code cleanups
+
 
 0.2.0    2006-09-15
  * InotifyEvent now contains a pointer to the source InotifyWatch

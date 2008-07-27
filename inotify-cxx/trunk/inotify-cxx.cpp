@@ -247,6 +247,9 @@ void Inotify::WaitForEvents(bool fNoIntr) throw (InotifyException)
     len = read(m_fd, m_buf, INOTIFY_BUFLEN);
   } while (fNoIntr && len == -1 && errno == EINTR);
   
+  if (errno == EWOULDBLOCK)
+    return;
+  
   if (len < 0)
     throw InotifyException(IN_EXC_MSG("reading events failed"), errno, this);
   
