@@ -13,6 +13,7 @@
   </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="2"/>
@@ -66,7 +67,9 @@
                       <Component id="removeButton" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="resetButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="251" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="propsButton" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="152" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -77,6 +80,7 @@
                   <Component id="addButton" alignment="3" pref="25" max="32767" attributes="0"/>
                   <Component id="removeButton" alignment="3" pref="25" max="32767" attributes="0"/>
                   <Component id="resetButton" alignment="3" pref="25" max="32767" attributes="0"/>
+                  <Component id="propsButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -119,6 +123,15 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resetPressed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="propsButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Properties..."/>
+                <Property name="actionCommand" type="java.lang.String" value="Properties"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="propsPressed"/>
               </Events>
             </Component>
           </SubComponents>

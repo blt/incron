@@ -25,6 +25,7 @@ package cz.aiken.util.lwtt;
 
 import javax.swing.Timer;
 import java.awt.event.*;
+import java.math.*;
 
 /**
  * This class represents a tracked task.
@@ -35,12 +36,18 @@ public class Task implements ActionListener, Comparable<Task> {
     
     private String name = "Unnamed task";
     private long consumption = 0L;
+    private double price = 1;
     
     private Timer timer = null;
     /**
      * period for updating time values [ms]
      */
     public static final int PERIOD = 10000;
+    
+    /**
+     * time units per hour
+     */
+    public static final double UNITS_PER_HOUR = 3600000;
     
     private ActionListener listener = null;
     
@@ -68,11 +75,13 @@ public class Task implements ActionListener, Comparable<Task> {
      * @param id task identifier
      * @param name task name
      * @param consumption up to now time consumption
+     * @param price price per hour
      */
-    public Task(int id, String name, long consumption) {
+    public Task(int id, String name, long consumption, double price) {
         this.id = id;
         this.name = name;
         this.consumption = consumption;
+        this.price = price;
         
         if (id >= nextId)
             nextId = id + 1;
@@ -124,6 +133,31 @@ public class Task implements ActionListener, Comparable<Task> {
      */
     public void setConsumption(long consumption) {
         this.consumption = consumption;
+    }
+    
+    /**
+     *  Sets the price per hour [currency unit].
+     *  Changing this parameter affects the current total price of the task.
+     * @param price new price value
+     */
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    
+    /**
+     * Returns the current price per hour [currency unit].
+     * @return current price value
+     */
+    public double getPrice() {
+        return price;
+    }
+    
+    /**
+     *  Returns the total price of this task [currency unit].
+     * @return total price of this task
+     */
+    public double getTotalPrice() {
+        return ((double) consumption) / UNITS_PER_HOUR * price;
     }
     
     /**

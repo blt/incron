@@ -41,6 +41,7 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
     private javax.swing.Timer timer = new javax.swing.Timer(300000, this);
     
     private MessageFormat timeFormat = new MessageFormat("{0,number}:{1,number,00}");
+    private MessageFormat priceFormat = new MessageFormat("{0,number}.{1,number,00}");
     
     private TaskFrame taskFrame = null;
     
@@ -69,6 +70,10 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
                 long mins = tasks.get(rowIndex).getConsumption() / 60000;
                 BigDecimal hm[] = new BigDecimal((int) mins).divideAndRemainder(new BigDecimal(60));
                 return timeFormat.format(hm);
+            case 2:
+                double tp = tasks.get(rowIndex).getTotalPrice();
+                BigDecimal pr[] = new BigDecimal(tp * 100).divideAndRemainder(new BigDecimal(100));
+                return priceFormat.format(pr);
             default: return null;
         }
     }
@@ -86,7 +91,7 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
      * @return column count
      */
     public int getColumnCount() {
-        return 2;
+        return 3;
     }
 
     /**
@@ -115,6 +120,7 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
         switch (column) {
             case 0: return "Task name";
             case 1: return "Time consumption [h:min]";
+            case 2: return "Total price";
             default: return "";
         }
     }
@@ -130,6 +136,7 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
         switch (columnIndex) {
             case 0: return String.class;
             case 1: return StringBuffer.class;
+            case 2: return StringBuffer.class;
             default: return Void.class;
         }
     }
@@ -144,6 +151,10 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex == 0;
+    }
+    
+    public Task getTask(int index) {
+        return tasks.get(index);
     }
     
     /**
@@ -183,6 +194,7 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
             Task t = tasks.get(i);
             t.start();
             fireTableCellUpdated(i, 1);
+            fireTableCellUpdated(i, 2);
         }        
     }
     
@@ -196,6 +208,7 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
             Task t = tasks.get(i);
             t.stop();
             fireTableCellUpdated(i, 1);
+            fireTableCellUpdated(i, 2);
         }
     }
     
@@ -221,6 +234,7 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
             Task t = tasks.get(i);
             t.setConsumption(0);
             fireTableCellUpdated(i, 1);
+            fireTableCellUpdated(i, 2);
         }
     }
     
@@ -288,10 +302,12 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
                     String ids = key.substring(0, key.length() - 5);
                     String name = props.getProperty(ids + ".name");
                     String cons = props.getProperty(ids + ".consumption");
+                    String price = props.getProperty(ids + ".price", "1");
                     try {
                         int id = Integer.parseInt(ids);
                         long cn = Long.parseLong(cons);
-                        Task t = new Task(id, name, cn);
+                        double pr = Double.parseDouble(price);
+                        Task t = new Task(id, name, cn, pr);
                         t.setActionListener(this);
                         tasks.add(t);
                     } catch (NumberFormatException e) {
@@ -331,6 +347,7 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
             String id = Integer.toString(t.getId());
             props.setProperty(id + ".name", t.getName());
             props.setProperty(id + ".consumption", Long.toString(t.getConsumption()));
+            props.setProperty(id + ".price", Double.toString(t.getPrice()));
         }
         
         try {
@@ -358,6 +375,7 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
         else {
             int row = tasks.indexOf(src);
             fireTableCellUpdated(row, 1);
+            fireTableCellUpdated(row, 2);
         }
     }
     

@@ -111,6 +111,8 @@ public class TaskFrame extends JFrame implements ListSelectionListener {
             startButton.setEnabled(rcnt < cnt);
             stopButton.setEnabled(rcnt > 0);
         }
+        
+        propsButton.setEnabled(cnt == 1);
     }
     
     /**
@@ -136,6 +138,7 @@ public class TaskFrame extends JFrame implements ListSelectionListener {
         addButton = new javax.swing.JButton();
         removeButton = new javax.swing.JButton();
         resetButton = new javax.swing.JButton();
+        propsButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
 
@@ -186,6 +189,14 @@ public class TaskFrame extends JFrame implements ListSelectionListener {
             }
         });
 
+        propsButton.setText("Properties...");
+        propsButton.setActionCommand("Properties");
+        propsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                propsPressed(evt);
+            }
+        });
+
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -200,7 +211,9 @@ public class TaskFrame extends JFrame implements ListSelectionListener {
                 .add(removeButton)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(resetButton)
-                .addContainerGap(251, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(propsButton)
+                .addContainerGap(152, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
@@ -209,6 +222,7 @@ public class TaskFrame extends JFrame implements ListSelectionListener {
             .add(addButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
             .add(removeButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
             .add(resetButton, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+            .add(propsButton)
         );
 
         jSplitPane1.setTopComponent(jPanel1);
@@ -302,6 +316,21 @@ public class TaskFrame extends JFrame implements ListSelectionListener {
             updateButtons();
         }
     }//GEN-LAST:event_startPressed
+
+private void propsPressed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_propsPressed
+    TaskPropetiesDialog d = new TaskPropetiesDialog(this, true);
+    int start = jTable1.getSelectedRow();
+    int cnt = jTable1.getSelectedRowCount();
+    if (cnt == 1) {
+        Task t = model.getTask(start);
+        d.setPrice(t.getPrice());
+        d.setVisible(true);
+        if (d.getReturnStatus() == TaskPropetiesDialog.RET_OK) {
+            t.setPrice(d.getPrice());
+            model.fireTableCellUpdated(start, 2);
+        }
+    }
+}//GEN-LAST:event_propsPressed
           
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
@@ -309,6 +338,7 @@ public class TaskFrame extends JFrame implements ListSelectionListener {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton propsButton;
     private javax.swing.JButton removeButton;
     private javax.swing.JButton resetButton;
     private javax.swing.JButton startButton;
