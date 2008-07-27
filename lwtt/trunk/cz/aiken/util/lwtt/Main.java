@@ -1,7 +1,7 @@
 /*
  * Main.java - main LWTT class
  *
- * Copyright (c) 2006 Lukas Jelinek, http://www.aiken.cz
+ * Copyright (c) 2006, 2007, 2008 Lukas Jelinek, http://www.aiken.cz
  *
  * ==========================================================================
  *
@@ -23,7 +23,7 @@
 
 package cz.aiken.util.lwtt;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /**
  * This class represents the application itself. It creates the main
@@ -43,11 +43,11 @@ public class Main implements Runnable {
      * Creates the main frame and makes it visible. Then it hands control
      * on the main application loop.
      * 
-     * <I>This method must be called only by the event-dispatching thread.</I>
+     * <I>This method may be called only by the event-dispatching thread.</I>
      */
     public void run() {
-       TaskFrame tf = new TaskFrame();
-       tf.setVisible(true);
+        TaskFrame tf = new TaskFrame();
+        tf.setVisible(true);
     } 
     
     /**

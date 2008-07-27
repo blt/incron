@@ -1,7 +1,7 @@
 /*
  * TaskTableModel.java - implementation of tracked tasks table model
  *
- * Copyright (c) 2006 Lukas Jelinek, http://www.aiken.cz
+ * Copyright (c) 2006, 2007, 2008 Lukas Jelinek, http://www.aiken.cz
  *
  * ==========================================================================
  *
@@ -28,6 +28,8 @@ import javax.swing.table.*;
 import java.util.*;
 import java.io.*;
 import java.awt.event.*;
+import java.math.*;
+import java.text.*;
 
 /**
  * This class represents the task table model.
@@ -38,10 +40,16 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
     private ArrayList<Task> tasks = new ArrayList<Task>();
     private javax.swing.Timer timer = new javax.swing.Timer(300000, this);
     
+    private MessageFormat timeFormat = new MessageFormat("{0,number}:{1,number,00}");
+    
+    private TaskFrame taskFrame = null;
+    
     /**
      * Creates a new instance of TaskTableModel
+     * @param tf task frame instance
      */
-    public TaskTableModel() {
+    public TaskTableModel(TaskFrame tf) {
+        taskFrame = tf;
         loadFromFile();
         timer.start();
     }
@@ -55,8 +63,12 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
      */
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
-            case 0: return tasks.get(rowIndex).getName();
-            case 1: return new Long(tasks.get(rowIndex).getConsumption() / 60000);
+            case 0:
+                return tasks.get(rowIndex).getName();
+            case 1:
+                long mins = tasks.get(rowIndex).getConsumption() / 60000;
+                BigDecimal hm[] = new BigDecimal((int) mins).divideAndRemainder(new BigDecimal(60));
+                return timeFormat.format(hm);
             default: return null;
         }
     }
@@ -84,11 +96,10 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
      * @param rowIndex row index
      * @param columnIndex column index
      */
+    @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0: tasks.get(rowIndex).setName((String) aValue);
-                break;
-            case 1: tasks.get(rowIndex).setConsumption(((Long) aValue).longValue());
                 break;
         }
     }
@@ -99,10 +110,11 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
      * @return column name; if the index is invalid it returns an empty
      * string
      */
+    @Override
     public String getColumnName(int column) {
         switch (column) {
             case 0: return "Task name";
-            case 1: return "Time consumption [min]";
+            case 1: return "Time consumption [h:min]";
             default: return "";
         }
     }
@@ -113,10 +125,11 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
      * @return appropriate class object; if the column index is invalid
      * it returns <CODE>Void.class</CODE>.
      */
+    @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
             case 0: return String.class;
-            case 1: return Long.class;
+            case 1: return StringBuffer.class;
             default: return Void.class;
         }
     }
@@ -128,6 +141,7 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
      * @return <CODE>true</CODE> for the first column (index 0),
      * <CODE>false</CODE> otherwise
      */
+    @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         return columnIndex == 0;
     }
@@ -198,6 +212,19 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
     }
     
     /**
+     * Resets the given tasks.
+     * @param start index of the first resetted task
+     * @param end index of the first NOT resetted task (the first task beyond the interval)
+     */
+    public void resetTasks(int start, int end) {
+        for (int i=start; i<=end; i++) {
+            Task t = tasks.get(i);
+            t.setConsumption(0);
+            fireTableCellUpdated(i, 1);
+        }
+    }
+    
+    /**
      * Destroys the timer controlling automatic data saving.
      */
     public void cancelAutoSave() {
@@ -249,6 +276,8 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
             props.loadFromXML(is);
             is.close();
             
+            taskFrame.setStartSettings(props);
+            
             Iterator<Object> it = props.keySet().iterator();
             while (it.hasNext()) {
                 String key = (String) it.next();
@@ -290,6 +319,10 @@ public class TaskTableModel extends AbstractTableModel implements ActionListener
         }
         
         Properties props = new Properties();
+        props.setProperty("window.location.x", Integer.toString(taskFrame.getX()));
+        props.setProperty("window.location.y", Integer.toString(taskFrame.getY()));
+        props.setProperty("window.size.w", Integer.toString(taskFrame.getWidth()));
+        props.setProperty("window.size.h", Integer.toString(taskFrame.getHeight()));
         for (int i=0; i<tasks.size(); i++) {
             Task t = tasks.get(i);
             String id = Integer.toString(t.getId());

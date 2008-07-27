@@ -1,7 +1,7 @@
 /*
  * Task.java - implementation of tracked task
  *
- * Copyright (c) 2006 Lukas Jelinek, http://www.aiken.cz
+ * Copyright (c) 2006, 2007, 2008 Lukas Jelinek, http://www.aiken.cz
  *
  * ==========================================================================
  *
@@ -55,8 +55,6 @@ public class Task implements ActionListener, Comparable<Task> {
         nextId++;
         return id;
     }
-    
-    
     
     /**
      * Creates a new instance of Task
@@ -133,6 +131,7 @@ public class Task implements ActionListener, Comparable<Task> {
      * the task name and consumption.
      * @return string representation
      */
+    @Override
     public String toString() {
         return name + "(" + Long.toString(consumption) + ")";
     }
