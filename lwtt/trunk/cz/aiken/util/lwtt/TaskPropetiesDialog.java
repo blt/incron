@@ -1,7 +1,24 @@
 /*
- * TaskPropetiesDialog.java
+ * TaskPropertiesDialog.java - task properties dialog
  *
- * Created on 3. kvìten 2008, 20:16
+ * Copyright (c) 2008 Lukas Jelinek, http://www.aiken.cz
+ *
+ * ==========================================================================
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License Version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * ==========================================================================
  */
 
 package cz.aiken.util.lwtt;
@@ -9,7 +26,11 @@ package cz.aiken.util.lwtt;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Task properties dialog class.
+ * 
+ * This class allows to set various properties of a task. Currently only
+ * price per hour can be set.
+ * 
  * @author  luk
  */
 public class TaskPropetiesDialog extends javax.swing.JDialog {
@@ -20,23 +41,40 @@ public class TaskPropetiesDialog extends javax.swing.JDialog {
     
     private double price = 1;
 
-    /** Creates new form TaskPropetiesDialog */
+    /** Creates a new TaskPropetiesDialog.
+     * @param parent parent object for this dialog
+     * @param modal modal dialog yes/no
+     */
     public TaskPropetiesDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         priceText.setText(Double.toString(price));
     }
 
-    /** @return the return status of this dialog - one of RET_OK or RET_CANCEL */
+    /**
+     * Returns the "return status" of this dialog - one of RET_OK or RET_CANCEL.
+     * 
+     * @return return status
+     */
     public int getReturnStatus() {
         return returnStatus;
     }
     
+    /**
+     * Sets the price per hour.
+     * 
+     * @param price new price per hour
+     */
     public void setPrice(double price) {
         this.price = price;
         priceText.setText(Double.toString(price));
     }
     
+    /**
+     * Returns the price per hour.
+     * 
+     * @return price per hour
+     */
     public double getPrice() {
         return price;
     }
@@ -148,13 +186,16 @@ public class TaskPropetiesDialog extends javax.swing.JDialog {
     }
 
     /**
-    * @param args the command line arguments
-    */
+     * This method is only for testing purposes.
+     * 
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 TaskPropetiesDialog dialog = new TaskPropetiesDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }

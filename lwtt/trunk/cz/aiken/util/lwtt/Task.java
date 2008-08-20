@@ -25,7 +25,6 @@ package cz.aiken.util.lwtt;
 
 import javax.swing.Timer;
 import java.awt.event.*;
-import java.math.*;
 
 /**
  * This class represents a tracked task.
