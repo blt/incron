@@ -33,7 +33,7 @@ import javax.swing.JOptionPane;
  * 
  * @author  luk
  */
-public class TaskPropetiesDialog extends javax.swing.JDialog {
+public class TaskPropertiesDialog extends javax.swing.JDialog {
     /** A return status code - returned if Cancel button has been pressed */
     public static final int RET_CANCEL = 0;
     /** A return status code - returned if OK button has been pressed */
@@ -41,11 +41,11 @@ public class TaskPropetiesDialog extends javax.swing.JDialog {
     
     private double price = 1;
 
-    /** Creates a new TaskPropetiesDialog.
+    /** Creates a new TaskPropertiesDialog.
      * @param parent parent object for this dialog
      * @param modal modal dialog yes/no
      */
-    public TaskPropetiesDialog(java.awt.Frame parent, boolean modal) {
+    public TaskPropertiesDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         priceText.setText(Double.toString(price));
@@ -193,7 +193,7 @@ public class TaskPropetiesDialog extends javax.swing.JDialog {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                TaskPropetiesDialog dialog = new TaskPropetiesDialog(new javax.swing.JFrame(), true);
+                TaskPropertiesDialog dialog = new TaskPropertiesDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
