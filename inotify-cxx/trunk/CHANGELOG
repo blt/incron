@@ -1,3 +1,6 @@
+0.7.3    2009-12-09
+ * cleanup of includes
+
 0.7.2    2007-04-18
  * added #include <stdint.h> (required for Debian Sarge, #0000155)
 
