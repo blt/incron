@@ -1,3 +1,6 @@
+0.7.4    2012-04-05
+ * new includes to build with GCC 4.4 and newer
+
 0.7.3    2009-12-09
  * cleanup of includes
 

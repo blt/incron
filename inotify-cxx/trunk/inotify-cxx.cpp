@@ -5,7 +5,7 @@
  * 
  * inotify C++ interface
  * 
- * Copyright (C) 2006, 2007, 2009 Lukas Jelinek <lukas@aiken.cz>
+ * Copyright (C) 2006, 2007, 2009, 2012 Lukas Jelinek <lukas@aiken.cz>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of one of the following licenses:
@@ -19,6 +19,7 @@
  *
  * Credits:
  *     Mike Frysinger (cleanup of includes)
+ *     Christian Ruppert (new include to build with GCC 4.4+)
  * 
  */
  
@@ -27,6 +28,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <fstream>
+#include <cstdio>
 
 #include <sys/syscall.h>
 
