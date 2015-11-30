@@ -29,6 +29,7 @@
 #include <sys/stat.h>
 #include <cstdio>
 #include <cstring>
+#include <assert.h>
 
 #include "usertable.h"
 #include "incroncfg.h"
@@ -351,7 +352,7 @@ void UserTable::OnEvent(InotifyEvent& rEvt)
         }
         else if (cs[px] == '&') {     // numeric mask
           char* s;
-          asprintf(&s, "%u", (unsigned) rEvt.GetMask());
+          assert(asprintf(&s, "%u", (unsigned) rEvt.GetMask()));
           cmd.append(s);
           free(s);
           oldpos = pos + 2;
@@ -566,4 +567,3 @@ failed:
   syslog(LOG_ERR, "cannot exec process: %s", strerror(errno));
   _exit(1);
 }
-
