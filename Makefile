@@ -53,6 +53,7 @@ install:	all install-man
 	$(INSTALL) -m 0755 -o $(USER) -d $(DESTDIR)$(USERDATADIR)
 	$(INSTALL) -m 0755 -o $(USER) -d $(DESTDIR)$(SYSDATADIR)
 	$(INSTALL) -m 0644 incron.conf.example $(DESTDIR)$(DOCDIR)/
+	$(INSTALL) -m 0755 incron.boot /etc/init.d/incron
 
 install-man:	incrontab.1 incrontab.5 incrond.8 incron.conf.5
 	$(INSTALL) -m 0755 -d $(DESTDIR)$(MANPATH)/man1
